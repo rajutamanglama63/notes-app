@@ -7,6 +7,15 @@ function App(props) {
   const [notes, setNotes] = useState(props.notes);
   const [newNote, setNewNote] = useState("");
 
+  const [showAll, setShowAll] = useState(true);
+
+  const btnToggle = () => {
+    setShowAll(!showAll)
+    
+  }
+
+  let noteToShow = showAll ? notes : notes.filter((note) => note.important === true)
+
   const submitHandler = (e) => {
     e.preventDefault()
     let note = {
@@ -25,8 +34,10 @@ function App(props) {
         <input placeholder="enter new note here..." value={newNote} onChange={(e) => setNewNote(e.target.value)} /> 
         <button type="submit">create note</button>
       </form>
+      <br />
+      <button onClick={btnToggle}>show {showAll ? "important" : "all"}</button>
       <ul>
-        {notes.map((note) => (
+        {noteToShow.map((note) => (
           <Note key={note.id} note={note} />
         ))}
       </ul>
