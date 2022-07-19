@@ -13,7 +13,7 @@ function App() {
       setNotes(result.data);
       console.log("rendered");
     });
-  }, []);
+  }, [showAll]);
 
   const btnToggle = () => {
     setShowAll(!showAll);
