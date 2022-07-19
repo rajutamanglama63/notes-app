@@ -24,12 +24,17 @@ import App from "./App";
 //   },
 // ];
 
-axios.get("http://localhost:5000/notes").then((response) => {
-  console.dir(response.data);
-  const root = ReactDOM.createRoot(document.getElementById("root"));
-  root.render(
-    <React.StrictMode>
-      <App notes={response.data} />
-    </React.StrictMode>
-  );
-});
+axios
+  .get("http://localhost:5000/notes")
+  .then((response) => {
+    console.dir(response);
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(
+      <React.StrictMode>
+        <App notes={response.data} />
+      </React.StrictMode>
+    );
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
