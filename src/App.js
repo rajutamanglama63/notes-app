@@ -1,37 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Note from "./components/Note";
 
-
-function App(props) {
-
-  const [notes, setNotes] = useState(props.notes);
+function App() {
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState("");
 
   const [showAll, setShowAll] = useState(true);
 
-  const btnToggle = () => {
-    setShowAll(!showAll)
-    
-  }
+  useEffect(() => {
+    axios.get("http://localhost:5000/notes").then((result) => {
+      setNotes(result.data);
+      console.log("rendered");
+    });
+  }, [showAll]);
 
-  let noteToShow = showAll ? notes : notes.filter((note) => note.important === true)
+  const btnToggle = () => {
+    setShowAll(!showAll);
+  };
+
+  let noteToShow = showAll
+    ? notes
+    : notes.filter((note) => note.important === true);
 
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let note = {
-      id : notes.length + 1,
-      content : newNote,
-      date : new Date().toISOString(),
-      important : Math.random() < 0.5  ? true : false
-    }
-    setNotes([...notes, note])
+      id: notes.length + 1,
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5 ? true : false,
+    };
+    setNotes([...notes, note]);
     setNewNote("");
-  }
+  };
   return (
     <div>
       <h1>Notes App</h1>
       <form onSubmit={submitHandler}>
-        <input placeholder="enter new note here..." value={newNote} onChange={(e) => setNewNote(e.target.value)} /> 
+        <input
+          placeholder="enter new note here..."
+          value={newNote}
+          onChange={(e) => setNewNote(e.target.value)}
+        />
         <button type="submit">create note</button>
       </form>
       <br />
