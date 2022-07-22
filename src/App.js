@@ -39,6 +39,18 @@ function App() {
       setNewNote("");
     });
   };
+
+  const btnToggleHandler = (id) => {
+    console.log(notes);
+    const note = notes.find((n) => n.id === id);
+    console.log(note);
+    const toUpdate = { ...note, important: !note.important };
+
+    axios.put(`http://localhost:5000/notes/${id}`, toUpdate).then((res) => {
+      console.log(res.data);
+      setNotes(notes.map((a) => (a.id !== id ? a : res.data)));
+    });
+  };
   return (
     <div>
       <h1>Notes App</h1>
@@ -54,7 +66,7 @@ function App() {
       <button onClick={btnToggle}>show {showAll ? "important" : "all"}</button>
       <ul>
         {noteToShow.map((note) => (
-          <Note key={note.id} note={note} />
+          <Note key={note.id} note={note} btnToggleHandler={btnToggleHandler} />
         ))}
       </ul>
     </div>
