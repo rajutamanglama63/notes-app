@@ -13,7 +13,7 @@ function App() {
       setNotes(result.data);
       console.log("rendered");
     });
-  }, [showAll]);
+  }, []);
 
   const btnToggle = () => {
     setShowAll(!showAll);
@@ -25,14 +25,19 @@ function App() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     let note = {
-      id: notes.length + 1,
+      // id: notes.length + 1,
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() < 0.5 ? true : false,
     };
-    setNotes([...notes, note]);
-    setNewNote("");
+
+    axios.post("http://localhost:5000/notes", note).then((res) => {
+      console.log(res.data);
+      setNotes([...notes, res.data]);
+      setNewNote("");
+    });
   };
   return (
     <div>
