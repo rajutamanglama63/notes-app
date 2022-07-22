@@ -53,10 +53,13 @@ function App() {
     const toUpdate = { ...note, important: !note.important };
 
     // axios.put(`http://localhost:5000/notes/${id}`, toUpdate)
-    noteApiServices.updateNoteObj(id, toUpdate).then((data) => {
-      console.log(data);
-      setNotes(notes.map((a) => (a.id !== id ? a : data)));
-    });
+    noteApiServices
+      .updateNoteObj(id, toUpdate)
+      .then((data) => {
+        console.log(data);
+        setNotes(notes.map((a) => (a.id !== id ? a : data)));
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <div>
