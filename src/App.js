@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import noteApiServices from "./api/notes";
 import Note from "./components/Note";
 
 function App() {
@@ -9,10 +10,14 @@ function App() {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/notes").then((result) => {
-      setNotes(result.data);
-      console.log("rendered");
+    // axios.get("http://localhost:5000/notes")
+    noteApiServices.getAllNotesObj().then((data) => {
+      setNotes(data);
     });
+    // .then((result) => {
+    //   setNotes(result.data);
+    //   console.log("rendered");
+    // });
   }, []);
 
   const btnToggle = () => {
@@ -33,22 +38,24 @@ function App() {
       important: Math.random() < 0.5 ? true : false,
     };
 
-    axios.post("http://localhost:5000/notes", note).then((res) => {
-      console.log(res.data);
-      setNotes([...notes, res.data]);
+    // axios.post("http://localhost:5000/notes", note)
+    noteApiServices.postNoteObj(note).then((note) => {
+      console.log(note);
+      setNotes([...notes, note]);
       setNewNote("");
     });
   };
 
   const btnToggleHandler = (id) => {
-    console.log(notes);
+    // console.log(notes);
     const note = notes.find((n) => n.id === id);
     console.log(note);
     const toUpdate = { ...note, important: !note.important };
 
-    axios.put(`http://localhost:5000/notes/${id}`, toUpdate).then((res) => {
-      console.log(res.data);
-      setNotes(notes.map((a) => (a.id !== id ? a : res.data)));
+    // axios.put(`http://localhost:5000/notes/${id}`, toUpdate)
+    noteApiServices.updateNoteObj(id, toUpdate).then((data) => {
+      console.log(data);
+      setNotes(notes.map((a) => (a.id !== id ? a : data)));
     });
   };
   return (
