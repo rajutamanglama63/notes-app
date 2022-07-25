@@ -10,6 +10,7 @@ function App() {
   const [newNote, setNewNote] = useState("");
 
   const [showAll, setShowAll] = useState(true);
+  const [errMsg, setErrMsg] = useState(null);
 
   useEffect(() => {
     // axios.get("http://localhost:5000/notes")
@@ -61,12 +62,15 @@ function App() {
         console.log(data);
         setNotes(notes.map((a) => (a.id !== id ? a : data)));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg("No such object exist, please refreash your browser.");
+        setTimeout(() => setErrMsg(null), 5000);
+      });
   };
   return (
     <div>
       <h1>Notes App</h1>
-      <Notification message={"this is message."} />
+      <Notification message={errMsg} />
       <form onSubmit={submitHandler}>
         <input
           placeholder="enter new note here..."
