@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import noteApiServices from "./api/notes";
 import Note from "./components/Note";
+import Footer from "./components/Footer";
+import Notification from "./components/Notification";
 
 function App() {
   const [notes, setNotes] = useState([]);
@@ -64,6 +66,7 @@ function App() {
   return (
     <div>
       <h1>Notes App</h1>
+      <Notification message={"this is message."} />
       <form onSubmit={submitHandler}>
         <input
           placeholder="enter new note here..."
@@ -79,6 +82,8 @@ function App() {
           <Note key={note.id} note={note} btnToggleHandler={btnToggleHandler} />
         ))}
       </ul>
+
+      <Footer />
     </div>
   );
 }
